@@ -35,7 +35,7 @@ var Layer = {
             shift: 2,
             shadeClose: true, // 开启遮罩关闭
             area: [windowWidth, windowHeight],
-            content: '<img src="http://blog.lingximu.com/qcyoung/wxpay.jpg" width="200px" height="200px"/><img src="http://blog.lingximu.com/qcyoung/alipay.jpg" width="200px" height="200px"/>'
+            content: '<img src="http://101.132.161.32/qcyoung/wxpay.jpg" width="200px" height="200px"/><img src="http://101.132.161.32/qcyoung/alipay.jpg" width="200px" height="200px"/>'
         });
     },
     wechatLayer: function() {
@@ -47,7 +47,7 @@ var Layer = {
             shift: 2,
             shadeClose: true, // 开启遮罩关闭
             area: [windowWidth, windowHeight],
-            content: '<img src="http://blog.lingximu.com/qcyoung/yangzj1992QRcode.jpg" width="200px" height="200px"/>'
+            content: '<img src="http://101.132.161.32/qcyoung/yangzj1992QRcode.jpg" width="200px" height="200px"/>'
         });
     }
 }
