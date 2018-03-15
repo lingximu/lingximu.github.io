@@ -287,7 +287,7 @@ var Layer = {
             shift: 2,
             shadeClose: true, // 开启遮罩关闭
             area: [windowWidth, windowHeight],
-            content: '<img src="http://101.132.161.32/qcyoung/wxpay.jpg" width="200px" height="200px"/><img src="http://101.132.161.32/qcyoung/alipay.jpg" width="200px" height="200px"/>'
+            content: '<img src="http://101.132.161.32:8000/qcyoung/wxpay.jpg" width="200px" height="200px"/><img src="http://101.132.161.32:8000/qcyoung/alipay.jpg" width="200px" height="200px"/>'
         });
     },
     wechatLayer: function wechatLayer() {
@@ -299,7 +299,7 @@ var Layer = {
             shift: 2,
             shadeClose: true, // 开启遮罩关闭
             area: [windowWidth, windowHeight],
-            content: '<img src="http://101.132.161.32/qcyoung/yangzj1992QRcode.jpg" width="200px" height="200px"/>'
+            content: '<img src="http://101.132.161.32:8000/qcyoung/yangzj1992QRcode.jpg" width="200px" height="200px"/>'
         });
     }
 };
@@ -664,7 +664,7 @@ window.dispatch = function () {
     var searchbox = $('#searchbox');
     var searchval = searchbox.val();
     if (searchval !== '') {
-        url = 'http://www.google.com/search?q=site:101.132.161.32/%20' + searchval;
+        url = 'http://www.google.com/search?q=site:101.132.161.32:8000/%20' + searchval;
         if (navigator.userAgent.indexOf('iPad') > -1 || navigator.userAgent.indexOf('iPhone') > -1) {
             location.href = url;
         } else {
@@ -759,7 +759,7 @@ $(function () {
         bgImg.onerror = function () {
             $('body').animate({ 'opacity': 1 }, 500);
         };
-        bgImg.src = 'http://101.132.161.32/qcyoung/TKL/wall-' + Math.ceil(Math.random() * 848) + '.jpg';
+        bgImg.src = 'http://101.132.161.32:8000/qcyoung/TKL/wall-' + Math.ceil(Math.random() * 848) + '.jpg';
         // bgImg.src = 'https://ws3.sinaimg.cn/large/006tKfTcly1fif2rhug8kj31kw0w0wif.jpg';
         $('body').animate({ 'opacity': 1 }, 500);
     } else if (!$('.index-context').length) {
