@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>nodejs 多环境配置最佳实践 | 灵犀木的博客</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="灵犀木的博客">
+  <meta name="author" content="lingxi mu">
+  <meta name="description" content="JavaScript、nodejs、CSS、c++、browser相关技术">
+  <meta name="keywords" content="">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+  <meta name="Copyright" content="lingximu"/>
+  <meta name="Contact" content="644522083@163.com"/>
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="灵犀木的博客" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico">
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.bb2b2222.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="http://101.132.161.32:8000/img/tiger.png">
+              <div class="site-author-name">lingxi mu</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">4</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">7.2k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/">
+                <span class="sb-item-count">0</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+
+        <div class="web-links">
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/lingximu" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.101.132.161.32:8000/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.101.132.161.32:8000/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links">
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="http://101.132.161.32:8000/img/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="http://101.132.161.32:8000/img/logo.png" alt="Logo" width="25px;"/><img id="brown-logo" src="http://101.132.161.32:8000/img/logo_green.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">灵犀木的博客</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">目录</a></li>
+            <!-- <li><a href="/tags" class="animsition-link" title="tags">标签</a></li> -->
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/lingximu" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <!-- <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/lingximu" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/lingximu" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/lingximu" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+             -->
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO lingximu &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求整理"><span class="toc-number">1.</span> <span class="toc-text">需求整理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决方案"><span class="toc-number">2.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">4.</span> <span class="toc-text">补充</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附录1：不同环境变量及其读取文件顺序"><span class="toc-number">5.</span> <span class="toc-text">附录1：不同环境变量及其读取文件顺序</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">nodejs 多环境配置最佳实践</h1>
+          <time datetime="2018-07-15T12:19:06.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2018 年 07 月 15 日</span>
+            <span style="margin-left: 10px;">最近更新于：2018 年 07 月 18 日</span>
+            <span style="margin-left: 10px;">本文共 2,071 字，读完约 8 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>在后端项目中，随着业务的增长和部署环境的增多，配置会越来越多。怎么在配置增多的情况下，还保持配置之间实现最大的复用，并且清晰明了，是一项非常重要的能力。</p>
+<p>在最近一个 nodejs 项目中，我完成的后端需要部署在五个环境: 开发环境、测试环境、公有云环境、私有云环境1、私有云2环境。这五个环境网络相互独立，底层依赖方地址不同。但其他逻辑一致。怎么样把这部分不同点抽出为配置，并对配置进行管理，总结了一套实践方案。</p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="需求整理"><a href="#需求整理" class="headerlink" title="需求整理"></a>需求整理</h2><p>我把后端对配置的需求整理如下：</p>
+<ol>
+<li><p>账号、密码等不能被 git 跟踪</p>
+<blockquote>
+<p>如果将账号密码等用 git 跟踪，并保存到内部 gitlab 上，很容易导致账号密码等被泄露。包括数据库的账号密码，这是极大的安全漏洞。</p>
+</blockquote>
+</li>
+<li><p>不涉密的配置信息可以被 git 跟踪，但需要根据环境的不同对下层暴露不同的配置。从而在业务代码上层打平不同环境之间的不同点。</p>
+</li>
+<li><p>配置需要尽可能的复用</p>
+<blockquote>
+<p> Don’t Repeat Yourself (DRY)<br>不要重复你自己，包括配置。</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>1 . 引入 <a href="https://www.npmjs.com/package/dotenv" target="_blank" rel="noopener">dotenv</a> 解决账号密码的问题。 dotenv 会自动去加载项目根目录下面的 <code>.env</code> 文件，它的内容类似这样：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line"><span class="meta">#</span> 数据库测试账号 有连接数限制</span><br><span class="line">db_host="22.3.2.3"</span><br><span class="line">db_database="dbname"</span><br><span class="line">db_user="username"</span><br><span class="line">db_password="password"</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br></pre></td></tr></table></figure></p>
+<p>dotenv 将其加载后，会以键值对的形式将其赋值到 <code>process.env</code> 上。在使用的时候可以从上面取。<br>我们将该文件名加入到 <code>.gitignore</code> 中，让 git 忽略该文件。同时，增加 <code>.env.trace</code> 文件对 <code>.env</code> 的改动进行跟踪。但只跟踪键值对的增减，不跟踪具体内容变化。如下:</p>
+<p><code>.gitignore &gt;</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> ……</span><br><span class="line">.env</span><br><span class="line">!.env.trace</span><br><span class="line"> ……</span><br></pre></td></tr></table></figure></p>
+<p><code>.env.trace &gt;</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line"><span class="meta">#</span> db</span><br><span class="line">db_host="xxxxxxxxxxxx"</span><br><span class="line">db_database="xx"</span><br><span class="line">db_user="xx"</span><br><span class="line">db_password="xx"</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br></pre></td></tr></table></figure></p>
+<p>2 . 引入 <a href="https://github.com/lorenwest/node-config" target="_blank" rel="noopener">node-config</a> 解决配置管理和配置复用的问题。<a href="https://github.com/lorenwest/node-config" target="_blank" rel="noopener">node-config</a> 有以下几个特点：</p>
+<ul>
+<li><p>按<a href="https://github.com/lorenwest/node-config/wiki/Configuration-Files#file-load-order" target="_blank" rel="noopener">一定的顺序</a>读取不同配置文件，并将其融合起来。如果后续的配置文件和前面的配置文件有相同的字段，以后面的为准。</p>
+</li>
+<li><p>引入方便，在要使用配置文件的时候，直接调用 <code>var config = require(&#39;config&#39;)</code> 即可， <code>config</code> 即当前环境的配置。不同位置的文件调用方法相同。</p>
+</li>
+</ul>
+<p>3 . 将以上两种库结合使用。我的配置文件如下：</p>
+<p><code>.env</code> 中放置所有的不能被跟踪的变量，如密码等：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">HOSTNAME=localhost</span><br><span class="line">NODE_APP_INSTANCE=1</span><br><span class="line"><span class="meta">#</span> node env</span><br><span class="line">NODE_ENV=development</span><br><span class="line"><span class="meta">#</span> debug</span><br><span class="line">DEBUG=""</span><br><span class="line"><span class="meta">#</span> db</span><br><span class="line">db_host="22.3.2.3"</span><br><span class="line">db_database="dbname"</span><br><span class="line">db_user="username"</span><br><span class="line">db_password="password"</span><br><span class="line"><span class="meta">#</span> 配置文件存放的文件夹</span><br><span class="line">NODE_CONFIG_DIR="./src/config"</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br></pre></td></tr></table></figure></p>
+<p><code>./src/config/default.js</code> 引用 <code>process.env</code> 上的密码等形成基础配置。</p>
+<blockquote>
+<p>ps: 密码等只在 default 中配置一份，因各个环境 .env 文件不同，所以各个环境通过 config 取的用户名、密码也不一样。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    db: &#123;</span><br><span class="line">        host: process.env.db_host,</span><br><span class="line">        database: process.env.db_database,</span><br><span class="line">        user: process.env.db_user,</span><br><span class="line">        password: process.env.db_password,</span><br><span class="line">    &#125;,</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p><code>./src/config/development.js</code> 存放开发和测试环境的变量，包括本地开发、测试环境、联调环境等共用的内容。</p>
+<p><code>./src/config/production.js</code> 存放生产环境公用的配置，包括私有云1、私有云2、公有云等。</p>
+<p><code>./src/config/pri.js</code>中存放私有云1、私有云2共同的配置，只需要把<code>.env</code>中的 <code>HOSTNAME</code> 设置为<code>pri</code>，就会读取该配置。</p>
+<p><code>./src/config/pri-1.js</code>中存放私有云1的配置，只需要把<code>.env</code>中的 <code>HOSTNAME</code> 设置为<code>pri</code>，<code>NODE_APP_INSTANCE</code> 设置为 <code>1</code> 就会读取该配置。</p>
+<p><code>./src/config/pri-2.js</code>中存放私有云2的配置，只需要把<code>.env</code>中的 <code>HOSTNAME</code> 设置为<code>pri</code>，<code>NODE_APP_INSTANCE</code> 设置为 <code>2</code> 就会读取该配置。</p>
+<p><code>./src/config/pub.js</code>中存放公有云的配置，只需要把<code>.env</code>中的 <code>HOSTNAME</code> 设置为<code>pri</code>，就会读取该配置。</p>
+<p>综上，就可以实现不同环境配置不同，而且配置的最大复用。下面整理了一份不同环境的环境变量，及其读取配置文件的顺序作为参考。</p>
+<p>还有两点需要注意：</p>
+<ol>
+<li>要实现在不同文件中 <code>var config = require(&#39;config&#39;)</code> 取到配置的效果，需要先将配置初始化。可以在入口文件中先 <code>require</code>一次。</li>
+<li>配置文件是根据环境变量 <code>HOSTNAME</code> 进行寻找的，而环境变量 <code>HOSTNAME</code> 是放到 <code>.env</code> 里面的。但 <code>dotenv</code> 有一个特点，不会覆盖已有的环境变量。也就是说，如果 <code>process.env</code> 上已经有了 <code>HOSTNAME</code> ，那么就不会生效，需要强制将其设为 <code>.env</code> 上的值。<br>综上两点，需要有一个配置初始化的文件，如下：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> result = <span class="built_in">require</span>(<span class="string">'dotenv'</span>).config();</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (result.error) &#123; <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(result.error, <span class="string">'dotevn parse error'</span>); &#125; <span class="keyword">else</span> &#123; <span class="built_in">console</span>.info(<span class="string">'dotevn parsed envs:  %O'</span>, result.parsed); &#125;</span><br><span class="line">process.env.HOSTNAME = result.parsed.HOSTNAME;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = <span class="built_in">require</span>(<span class="string">'config'</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在应用启动的时候，需要先加载该文件。</p>
+<p>最后，还有一个调试的小技巧。在 <code>node-config</code> 的配置中，任何环境中，只要有 <code>local.EXT</code>(EXT是后缀，可以是 js、yml、json 等) ，那么都会读取，而且会覆盖回去相同字段的配置。即 <code>local.EXT</code> 具有最高优先级。<br>这个文件一般加入 git 的忽略名单，只有特殊情况下才会用来修改个别配置字段。比如在本地开发的时候，模拟联调环境的配置。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇文章解决了文章开始提出的三个问题，其中用到了开源库 <code>dotenv</code> 和 <code>node-config</code>。<br>通过解决该问题，笔者发现，在解决一个问题的时候，要尽可能考虑使用开源的库。其实像配置的问题，我们内部之前是自己写了方法去按顺序加载文件，并 merge。<br>但自己写的方法永远只能解决现在遇到的问题，比如之前没有多环境部署需求，只是区分开发和线上，那么在遇到多环境的情况下，就需要对之前的逻辑进行更改。<br>而使用开源的解决方案，不但能解决现在的问题，还能解决今后遇到的问题(这些问题你现在可能并没有遇到，但对应的库因为使用的人多，已经解决了这些问题)。<br>so ~ <code>人生苦短，拥抱开源！以解决问题为导向！才是提高效率的关键！</code></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>我们组做了一个初始化项目的工具 <a href="https://github.com/uron/uron-cli" target="_blank" rel="noopener">uron-cli</a> 和全栈开发模板 <a href="https://github.com/uron-templates/fullstack" target="_blank" rel="noopener">fullstack</a>，可以用下面的命令在本地生成一个全栈项目：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install -g uron-cli</span><br><span class="line">uron init fullstack my-project</span><br></pre></td></tr></table></figure></p>
+<p>生成的项目是一个可以在生产中使用的全栈项目，前端使用 <a href="https://github.com/vusion/vusion-cli" target="_blank" rel="noopener">vusion</a> (一个基于 vue 开发的框架)，后端使用 <a href="http://koajs.com/" target="_blank" rel="noopener">koa2</a> 搭建了一套后端框架(包括 vscode 调试、日志、数据库操作、多配置管理等等)。</p>
+<p>其中的配置管理和密码管理，就是根据本篇文章的理论完成。可以初始化一个项目查看源码，其中配置了测试数据库的地址和用户名、密码等。可以直接运行起来，并进行调试(使用 vscode)。</p>
+<h2 id="附录1：不同环境变量及其读取文件顺序"><a href="#附录1：不同环境变量及其读取文件顺序" class="headerlink" title="附录1：不同环境变量及其读取文件顺序"></a>附录1：不同环境变量及其读取文件顺序</h2><blockquote>
+<p>下面的顺序是我们使用的，而 node-config 实际支持的层级更多，更详细的参考 <a href="https://github.com/lorenwest/node-config/wiki/Configuration-Files#file-load-order" target="_blank" rel="noopener"># file-load-order</a><br>如果某个层级的文件不需要，可以去掉，并不影响配置加载</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>变量HOSTNAME</th>
+<th>变量NODE_ENV</th>
+<th>变量NODE_APP_INSTANCE</th>
+<th>配置文件读取顺序</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>localhost</td>
+<td>development</td>
+<td>无</td>
+<td>default.EXT -&gt; development.EXT -&gt; localhost.EXT -&gt;  local.EXT</td>
+</tr>
+<tr>
+<td>dev.domain.com</td>
+<td>development</td>
+<td>无</td>
+<td>default.EXT -&gt; development.EXT -&gt; dev.EXT -&gt; dev.domain.com.EXT -&gt; local.EXT</td>
+</tr>
+<tr>
+<td>liantiao.domain.com</td>
+<td>development</td>
+<td>无</td>
+<td>default.EXT -&gt; development.EXT -&gt; liantiao.EXT -&gt; liantiao.domain.com.EXT -&gt; local.EXT</td>
+</tr>
+<tr>
+<td>pri.domain.com</td>
+<td>production</td>
+<td>1</td>
+<td>default.EXT -&gt; production.EXT -&gt; pri.EXT -&gt; pri-1.EXT -&gt; pri.domain.com.EXT -&gt; local.EXT</td>
+</tr>
+<tr>
+<td>pri.domain.com</td>
+<td>production</td>
+<td>2</td>
+<td>default.EXT -&gt; production.EXT -&gt; pri.EXT -&gt; pri-2.EXT -&gt; pri.domain.com.EXT -&gt; local.EXT</td>
+</tr>
+<tr>
+<td>pub.domain.com</td>
+<td>production</td>
+<td>无</td>
+<td>default.EXT -&gt; production.EXT -&gt; pub.EXT -&gt; pri.domain.com.EXT -&gt; local.EXT</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<hr>
+
+        </div>
+        <p class="post-copyright">本文版权归 lingximu 所有。来源灵犀木博客(blog.lingximu.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <!-- <a class="code-article" href="https://github.com/yangzj1992/blob/master/koajs-envs.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a> -->
+          <i class="fa fa-tags"></i>
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/koa-nodejs-env/">koa nodejs env</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i>
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <!-- <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span> -->
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=nodejs 多环境配置最佳实践 | 灵犀木 | lingximu&#39;s blog &amp;url=http://www.101.132.161.32:8000/2018/07/15/koajs-envs/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.101.132.161.32:8000/2018/07/15/koajs-envs/index.html&amp;title=nodejs 多环境配置最佳实践 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.101.132.161.32:8000/2018/07/15/koajs-envs/index.html&amp;text=nodejs 多环境配置最佳实践;via=lingximu| 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=&amp;t=nodejs 多环境配置最佳实践 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.101.132.161.32:8000/2018/07/15/koajs-envs/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+  
+    <a class="pull-right" href="/2018/07/14/koajs-log/">
+      koajs 日志和错误处理最佳实践 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//lingximu.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.101.132.161.32:8000/2018/07/15/koajs-envs/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By lingxi mu. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/lingximu/hexo-theme-lxm">hexo-theme-lxm</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/lingximu" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/lingximu" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/lingximu" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/lingximu" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- <script async id="dsq-count-scr" src="https://lingximu.disqus.com/count.js" ></script> -->
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.ebb0e0e1.min.js"></script></body>
+</html>

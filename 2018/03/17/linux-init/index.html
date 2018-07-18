@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>初始化 centos7 服务器 | 灵犀木的博客</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="灵犀木的博客">
+  <meta name="author" content="lingxi mu">
+  <meta name="description" content="JavaScript、nodejs、CSS、c++、browser相关技术">
+  <meta name="keywords" content="">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+  <meta name="Copyright" content="lingximu"/>
+  <meta name="Contact" content="644522083@163.com"/>
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="灵犀木的博客" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico">
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.bb2b2222.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="http://101.132.161.32:8000/img/tiger.png">
+              <div class="site-author-name">lingxi mu</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">4</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">7.2k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/">
+                <span class="sb-item-count">0</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+
+        <div class="web-links">
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/lingximu" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.101.132.161.32:8000/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.101.132.161.32:8000/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links">
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="http://101.132.161.32:8000/img/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="http://101.132.161.32:8000/img/logo.png" alt="Logo" width="25px;"/><img id="brown-logo" src="http://101.132.161.32:8000/img/logo_green.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">灵犀木的博客</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">目录</a></li>
+            <!-- <li><a href="/tags" class="animsition-link" title="tags">标签</a></li> -->
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/lingximu" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <!-- <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/lingximu" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/lingximu" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/lingximu" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+             -->
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO lingximu &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#初始化-centos7-服务器"><span class="toc-number">1.</span> <span class="toc-text">初始化 centos7 服务器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#软件"><span class="toc-number">1.1.</span> <span class="toc-text">软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户-简化"><span class="toc-number">1.2.</span> <span class="toc-text">用户(简化)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用户"><span class="toc-number">1.3.</span> <span class="toc-text">用户</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将80端口导到8000"><span class="toc-number">1.4.</span> <span class="toc-text">将80端口导到8000</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#github秘钥"><span class="toc-number">1.5.</span> <span class="toc-text">github秘钥</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vim"><span class="toc-number">1.6.</span> <span class="toc-text">vim</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查看端口是否监听"><span class="toc-number">1.7.</span> <span class="toc-text">查看端口是否监听</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检测是否被防火墙挡住-link"><span class="toc-number">1.8.</span> <span class="toc-text">检测是否被防火墙挡住 link</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql的安装和配置（centos6）"><span class="toc-number">1.9.</span> <span class="toc-text">mysql的安装和配置（centos6）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置ssh免密登录"><span class="toc-number">1.10.</span> <span class="toc-text">配置ssh免密登录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sshpass自动输入密码"><span class="toc-number">1.11.</span> <span class="toc-text">sshpass自动输入密码</span></a></li></ol></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">初始化 centos7 服务器</h1>
+          <time datetime="2018-03-17T09:49:16.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2018 年 03 月 17 日</span>
+            <span style="margin-left: 10px;">最近更新于：2018 年 07 月 18 日</span>
+            <span style="margin-left: 10px;">本文共 883 字，读完约 4 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <h1 id="初始化-centos7-服务器"><a href="#初始化-centos7-服务器" class="headerlink" title="初始化 centos7 服务器"></a>初始化 centos7 服务器</h1><blockquote>
+<p>当购买了一台服务器，对其进行初始化是一个很繁琐的工作。一般包括建子账号、安装 mysql、ssh 登录等等。本文以 <code>centos7</code> 为例，对其进行了总结。按部就班就能搭建你自己的服务器。</p>
+</blockquote>
+<h2 id="软件"><a href="#软件" class="headerlink" title="软件"></a>软件</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span># 安装软件</span><br><span class="line">yum install curl lrzsz git make gcc g++ zlib1g-dev ruby ruby-dev wget zip unzip bzip2 vim fontforge sshpass net-tools tcpdump</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># 用nvm安装node</span><br><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | bash</span><br><span class="line">source ~/.bashrc</span><br><span class="line">nvm install v8.9.4</span><br><span class="line">nvm use 8.9.4</span><br><span class="line">nvm alias default 8.9.4</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span># 全局</span><br><span class="line">npm install -g phantomjs@2.1.1 --unsafe-perm</span><br><span class="line">npm install -g cnpm pm2 --registry=https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+<h2 id="用户-简化"><a href="#用户-简化" class="headerlink" title="用户(简化)"></a>用户(简化)</h2><p>参考文献： <a href="https://www.cnblogs.com/sparkdev/p/7044950.html" target="_blank" rel="noopener">docker Machine</a></p>
+<ol>
+<li>在目标主机上创建一个用户并加入sudo 组</li>
+<li>为该用户设置 sudo 操作不需要输入密码</li>
+<li>把本地用户的 ssh public key 添加到目标主机上</li>
+</ol>
+<p>比如我们要在远程主机上添加一个名为 nick 的用户并加入 sudo 组：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo adduser nick</span><br><span class="line">$ sudo usermod -a -G sudo nick</span><br></pre></td></tr></table></figure></p>
+<p>然后设置 sudo 操作不需要输入密码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo visudo</span><br></pre></td></tr></table></figure></p>
+<p>把下面一行内容添加到文档的最后并保存文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nick   ALL=(ALL:ALL) NOPASSWD: ALL</span><br></pre></td></tr></table></figure></p>
+<p>最后把本地用户的 ssh public key 添加到目标主机上：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-copy-id -i ~/.ssh/id_rsa.pub nick@xxx.xxx.xxx.xxx</span><br></pre></td></tr></table></figure></p>
+<p>这几步操作的主要目的是获得足够的权限可以远程的操作目标主机。</p>
+<h2 id="用户"><a href="#用户" class="headerlink" title="用户"></a>用户</h2><p><a href="http://blog.csdn.net/liangpingguo/article/details/76641098" target="_blank" rel="noopener">参考文献</a></p>
+<ul>
+<li><p>增加用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adduser xuefei</span><br><span class="line">passwd xuefei</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">### 查看权限</span><br><span class="line">ls -l /etc/sudoers</span><br><span class="line">## 修改权限</span><br><span class="line">chmod 777 /etc/sudoers</span><br><span class="line">usermod -G wheel xuefei</span><br><span class="line">chmod 0440 /etc/sudoers</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="将80端口导到8000"><a href="#将80端口导到8000" class="headerlink" title="将80端口导到8000"></a>将80端口导到8000</h2><p><a href="http://man.linuxde.net/iptables" target="_blank" rel="noopener">iptables命令</a><br>| <a href="http://blog.chinaunix.net/uid-26495963-id-3279216.html" target="_blank" rel="noopener">iptables详解</a><br>| <a href="http://blog.51yip.com/linux/1404.html" target="_blank" rel="noopener">添加删除</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8000</span><br><span class="line">iptables -t nat -I OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8000</span><br></pre></td></tr></table></figure></p>
+<h2 id="github秘钥"><a href="#github秘钥" class="headerlink" title="github秘钥"></a>github秘钥</h2><p><a href="https://github.com/settings/keys" target="_blank" rel="noopener">增加 github keys</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C &quot;644522083@163.com&quot;</span><br><span class="line">cat ~/.ssh/id_rsa.pub</span><br><span class="line">## 拖测试代码</span><br><span class="line">git@github.com:chenzhongchen27/firstfly.cn.git</span><br></pre></td></tr></table></figure></p>
+<h2 id="vim"><a href="#vim" class="headerlink" title="vim"></a>vim</h2><ul>
+<li>强制退出 <code>q!</code></li>
+<li>没有权限时强制保存 <code>:w !sudo tee %</code></li>
+<li><code>u</code>撤销上一步的操作</li>
+<li><code>Ctrl+r</code>恢复上一步被撤销的操作</li>
+<li><code>dd</code>删除一行</li>
+</ul>
+<h2 id="查看端口是否监听"><a href="#查看端口是否监听" class="headerlink" title="查看端口是否监听"></a>查看端口是否监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo netstat -tnlp | grep :8000</span><br><span class="line">## 如果netstat命令没有，则</span><br><span class="line">sudo yum install net-tools</span><br><span class="line">## mac 使用</span><br><span class="line">lsof -i:8000</span><br></pre></td></tr></table></figure>
+<h2 id="检测是否被防火墙挡住-link"><a href="#检测是否被防火墙挡住-link" class="headerlink" title="检测是否被防火墙挡住 link"></a>检测是否被防火墙挡住 <a href="https://serverfault.com/questions/725262/what-causes-the-connection-refused-message" target="_blank" rel="noopener">link</a></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install tcpdump</span><br><span class="line">sudo tcpdump -n host 192.0.2.1 and port 22222</span><br><span class="line"><span class="meta">#</span># other</span><br><span class="line">curl http://199.247.20.159:8000</span><br></pre></td></tr></table></figure>
+<h2 id="mysql的安装和配置（centos6）"><a href="#mysql的安装和配置（centos6）" class="headerlink" title="mysql的安装和配置（centos6）"></a>mysql的安装和配置（centos6）</h2><ul>
+<li>安装 <a href="http://www.cnblogs.com/xiaoluo501395377/archive/2013/04/07/3003278.html" target="_blank" rel="noopener">centos6参考文献</a>  <a href="https://www.digitalocean.com/community/tutorials/how-to-install-mariadb-on-centos-7" target="_blank" rel="noopener">centos7参考</a></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">yum install -y mysql-server mysql mysql-deve</span><br><span class="line">service mysqld start</span><br><span class="line"><span class="meta">#</span># 开机自启动</span><br><span class="line">chkconfig mysqld on</span><br><span class="line"><span class="meta">#</span># 通过该命令给root账号设置密码为 root</span><br><span class="line">mysqladmin -u root password 'root'　</span><br><span class="line"><span class="meta">#</span># 登录</span><br><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建用户&amp;管理权限 <a href="https://www.jianshu.com/p/d7b9c468f20d" target="_blank" rel="noopener">参考文献</a></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span># 创建</span><br><span class="line">CREATE USER 'xuefei'@'%' IDENTIFIED BY 'mima';</span><br><span class="line"><span class="meta">#</span># 授权</span><br><span class="line">GRANT ALL ON *.* TO 'xuefei'@'%';</span><br></pre></td></tr></table></figure>
+<h2 id="配置ssh免密登录"><a href="#配置ssh免密登录" class="headerlink" title="配置ssh免密登录"></a>配置ssh免密登录</h2><p><a href="https://zhuanlan.zhihu.com/p/28423720" target="_blank" rel="noopener">ssh参考文献</a><br><a href="https://www.jianshu.com/p/f7f4142a1556" target="_blank" rel="noopener">管理git生成的多个ssh key</a><br><a href="https://zhuanlan.zhihu.com/p/28423720" target="_blank" rel="noopener">SSH免密登录是怎么玩儿的?</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">## 配置ssh</span><br><span class="line">ssh-copy-id xuefei@101.132.161.32</span><br><span class="line">## ssh debug模式</span><br><span class="line">ssh &apos;xuefei@101.132.161.32&apos; -v</span><br><span class="line">## 不生效时，修改权限</span><br><span class="line">chmod 700 ~/.ssh</span><br></pre></td></tr></table></figure></p>
+<h2 id="sshpass自动输入密码"><a href="#sshpass自动输入密码" class="headerlink" title="sshpass自动输入密码"></a>sshpass自动输入密码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">## linux</span><br><span class="line">apt-get install sshpass</span><br><span class="line">## mac</span><br><span class="line">brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb</span><br><span class="line">## 直接输入密码连接（也可以指定密码文件）</span><br><span class="line">sshpass -p MyPa55word ssh me@myservor.com</span><br><span class="line">## ssh/config中进行配置 ProxyCommand sshpass -pmypass ssh netmoon@%h-raw nc localhost %p</span><br></pre></td></tr></table></figure>
+
+        </div>
+        <p class="post-copyright">本文版权归 lingximu 所有。来源灵犀木博客(blog.lingximu.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <!-- <a class="code-article" href="https://github.com/yangzj1992/blob/master/linux-init.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a> -->
+          <i class="fa fa-tags"></i>
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+              
+              
+                <a class="post-tags" href="/tags/linux-shell/">linux shell</a>
+                
+              
+            
+          </span>
+          <i class="fa fa-eye"></i>
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <!-- <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span> -->
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=初始化 centos7 服务器 | 灵犀木 | lingximu&#39;s blog &amp;url=http://www.101.132.161.32:8000/2018/03/17/linux-init/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.101.132.161.32:8000/2018/03/17/linux-init/index.html&amp;title=初始化 centos7 服务器 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.101.132.161.32:8000/2018/03/17/linux-init/index.html&amp;text=初始化 centos7 服务器;via=lingximu| 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=&amp;t=初始化 centos7 服务器 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.101.132.161.32:8000/2018/03/17/linux-init/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+    <a class="pull-left" href="/2018/05/17/docker-guide/">
+      ← docker镜像的制作及应用
+    </a>
+  
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//lingximu.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.101.132.161.32:8000/2018/03/17/linux-init/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By lingxi mu. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/lingximu/hexo-theme-lxm">hexo-theme-lxm</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/lingximu" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/lingximu" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/lingximu" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/lingximu" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- <script async id="dsq-count-scr" src="https://lingximu.disqus.com/count.js" ></script> -->
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.ebb0e0e1.min.js"></script></body>
+</html>
