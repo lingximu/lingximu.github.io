@@ -13,7 +13,7 @@
   <!--<![endif]-->
   
 <head>
-  <title>自我介绍 | 灵犀木的博客</title>
+  <title>nodejs 错误处理原则 | 灵犀木的博客</title>
   <!-- Meta data -->
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -93,13 +93,13 @@
           <div class="sb-list">
             <div class="sb-item sb-posts">
               <a href="/archives">
-                <span class="sb-item-count">5</span>
+                <span class="sb-item-count">6</span>
                 <span class="sb-item-name">日志</span>
               </a>
             </div>
             <div class="sb-item sb-words">
               <a href="/archives">
-                <span class="sb-item-count">10.2k</span>
+                <span class="sb-item-count">10.7k</span>
                 <span class="sb-item-name">字数</span>
               </a>
             </div>
@@ -245,102 +245,113 @@
   <!-- ============================ END Hero Image =========================== -->
     
 <section id="intro" class="intro">
-  <div class="container about-content">
-    <div class="col-md-8 col-md-offset-2">
-      <h2 style="text-align:center;">自我介绍</h2>
-    </div>
-    <div class="col-md-8 col-md-offset-2">
+  <div class="container">
+    <div class="post-content">
       
-        <div id="toc" class="toc-article">
+        <div id="toc" class="toc-article col-md-2">
           <strong class="toc-title">目录</strong>
-          <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自我介绍"><span class="toc-number">1.</span> <span class="toc-text">自我介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#现在能做什么"><span class="toc-number">1.1.</span> <span class="toc-text">现在能做什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#软素质"><span class="toc-number">1.2.</span> <span class="toc-text">软素质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#项目经验"><span class="toc-number">1.3.</span> <span class="toc-text">项目经验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#联系方式"><span class="toc-number">1.4.</span> <span class="toc-text">联系方式</span></a></li></ol></li></ol>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#错误发生时"><span class="toc-number">1.</span> <span class="toc-text">错误发生时</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#原则"><span class="toc-number">2.</span> <span class="toc-text">原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用的库"><span class="toc-number">3.</span> <span class="toc-text">使用的库</span></a></li></ol>
         </div>
       
-      <h1 id="自我介绍"><a href="#自我介绍" class="headerlink" title="自我介绍"></a>自我介绍</h1><hr>
-<pre><code>对企业来说，我认为考察一个人应该是从两方面考察：第一方面，是这个人能做什么；第二方面，是这个人的成长空间，也就是软素质。所以，我分别从这两方面介绍自己：
-</code></pre><h2 id="现在能做什么"><a href="#现在能做什么" class="headerlink" title="现在能做什么"></a>现在能做什么</h2><ul>
-<li><p>优秀的前端</p>
-<ul>
-<li>熟练掌握 reactjs<ul>
-<li>研二在北森云计算实习了7个月，熟练使用<code>reactjs / immutablejs / redux / webpack</code></li>
-<li>负责了项目的部分重构。曾在北森述职答辩中获得了第一名</li>
-<li>了解 reactjs 的深层原理，曾自己实现了简易版的 react: <a href="https://github.com/lingximu/my_reactjs" target="_blank" rel="noopener">my-reactjs</a></li>
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">nodejs 错误处理原则</h1>
+          <time datetime="2018-05-21T14:23:02.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2018 年 05 月 21 日</span>
+            <span style="margin-left: 10px;">最近更新于：2018 年 07 月 21 日</span>
+            <span style="margin-left: 10px;">本文共 459 字，读完约 2 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>在服务端，错误分为代码错误和运行错误。</p>
+</blockquote>
+<blockquote>
+<p>代码错误：即逻辑错误，比如调用一个不存在的函数，比如给函数传递了错误的参数，这一类是需要立刻抛出异常，停止运行的。因为无论如何，出错的代码也不会自动运行出正确的结果。那么当然出错时立刻抛出异常，便于排查问题。</p>
+</blockquote>
+<blockquote>
+<p>运行错误：即环境引起的错误，比如读写数据库错误、因网络问题导致调用底层服务出错等。这一部分很少会出问题，但总是有出问题的可能。所以我们需要将这一部分也考虑进去。</p>
+</blockquote>
+<p><img src="http://img-mk.lingximu.com/54d42d16a7ad350e33f949fe48d63a6f.jpg" alt="错误处理"></p>
+<h2 id="错误发生时"><a href="#错误发生时" class="headerlink" title="错误发生时"></a>错误发生时</h2><ul>
+<li>异步：开发环境引入 longjohn ，捕捉异步错误发生时的堆栈</li>
+<li>需要带上所有错误上抛时的异常。因为底层出错时，该错误会上抛，但很多人会将底层错误掩盖。比如在网络出错导致调用底层服务出错时，底层会抛出ETIMEOUT错误，但上层不会详细显示底层错误，会捕捉到该错误，然后向上抛出 “server error”等。这会掩盖下面的错误详情，导致排查问题效率低下。</li>
 </ul>
-</li>
-<li>熟练掌握 vuejs<ul>
-<li>在网易使用 vuejs 一年时间，参与开发了一套 vue 组件库和对应的命令行工具： <a href="https://vusion.github.io/guides/introduction" target="_blank" rel="noopener">vusion</a></li>
-<li>使用 vuejs 完成过<strong>三个</strong>项目，积累了丰富的经验</li>
+<h2 id="原则"><a href="#原则" class="headerlink" title="原则"></a>原则</h2><ul>
+<li>所有的错误在第一时间就应该抛出来，并带上错误上抛过程中所有添加的异常信息，包括最底层的错误细节。便于排查。</li>
+<li>错误永远不应该被掩饰，因为这除了增加排查错误的难度和延缓解决问题的时间，没有任何其他意义。</li>
+<li>server 层的函数都应该校验传入的参数，可以简单的使用 <code>assert</code> 。</li>
 </ul>
-</li>
-<li><strong>熟练掌握各种调试技巧。定位问题快速。</strong></li>
+<h2 id="使用的库"><a href="#使用的库" class="headerlink" title="使用的库"></a>使用的库</h2><ul>
+<li>verror 、async/await可以将异步错误同步抛出</li>
 </ul>
-</li>
-<li><p>优秀的 nodejs 工程师</p>
-<ul>
-<li>使用 nodejs 作为服务端语言开发过两个全栈项目，其中一个是 <a href="https://domain.163yun.com/" target="_blank" rel="noopener">网易云域名系统</a></li>
-<li>在项目的过程中，对项目本身进行完善。解决了 <a href="http://lingximu.com/2018/07/15/koajs-envs/" target="_blank" rel="noopener">配置管理</a> / <a href="http://lingximu.com/2018/07/14/koajs-log/" target="_blank" rel="noopener">日志和错误处理</a> / 数据库版本控制 等痛点，并制作了一个模板初始化工具 <a href="https://github.com/uron/uron-cli" target="_blank" rel="noopener">uron-cli</a> ，并从实践中抽离出两套模板 <a href="https://github.com/uron-templates/fullstack" target="_blank" rel="noopener">fullstack template</a> / <a href="https://github.com/uron-templates/person" target="_blank" rel="noopener">person template</a>。</li>
-<li>自学并在 nodejs 端使用 <code>graphql</code> 作为接口规范，其中个人项目 react-native 应用 <a href="https://github.com/lingximu/my_rn_demo" target="_blank" rel="noopener">水果商城</a> 的后端接口就是用 graphql 规范。</li>
-</ul>
-</li>
-<li>掌握 react-native 应用<ul>
-<li>有丰富的 reactjs 基础</li>
-<li>完成过一个 RN 应用 <a href="https://github.com/lingximu/my_rn_demo" target="_blank" rel="noopener">薛大人的水果铺</a>。</li>
-</ul>
-</li>
-<li>掌握 docker 并在实际项目中应用, 写过一篇 <a href="http://lingximu.com/2018/05/17/docker-guide/" target="_blank" rel="noopener">docker镜像制作及应用</a>，是内部的一次分享的讲稿。</li>
-<li>有一定项目管理的经验：在网易现在负责两个项目，一个<a href="https://domain.163yun.com/" target="_blank" rel="noopener">域名</a>，一个内部运维系统。</li>
-</ul>
-<h2 id="软素质"><a href="#软素质" class="headerlink" title="软素质"></a>软素质</h2><ul>
-<li>较强的自学能力<ul>
-<li>从接触前端以来大概两年半，基本是遇到什么学什么，在保持精通 JavaScript 的基础上，学习过 gulp、webpack、php、nodejs、koa、mysql、mongoose、react、redux、immutable、vue、vuex、http 协议、restful api、graphql、fiddler、charles、linux、hexo 等等，也自己制作过扩展、制作过工具、搭过服务器、设计过数据库等，也深知贪多嚼不烂的道理，重要的会去了解原理，还有一些只是保证能完成工作即可。锻炼了一定的学习能力。</li>
-</ul>
-</li>
-<li>一直表现优秀<ul>
-<li>硕士表现优秀，我们学校2017届硕士毕业生代表。</li>
-<li>有学术研究能力，曾在《密码学报》上发表论文一篇《一种基于类名的网页大容量信息隐藏算法》。ps:《密码学报》是密码学方向国内最专业的期刊。所以，也有对技术的钻研精神。</li>
-<li>实习时用了不到三个月就熟练掌握了项目代码，负责项目的重构（六个实习生中唯一一个完全掌握的）。</li>
-<li>校招时才自学前端不到一年，拿到了网易的 special offer。</li>
-</ul>
-</li>
-<li><strong>不流于表面，对原理有探究精神</strong><ul>
-<li>为了解 react 和 regular，仿照正版写过 mini 版的  <a href="https://github.com/lingximu/my_reactjs" target="_blank" rel="noopener">react</a> 和  <a href="https://github.com/lingximu/my_regularjs" target="_blank" rel="noopener">regular</a>.</li>
-<li>深入阅读过《HTTP 权威指南》《你不知道的 JavaScript 》《ECMAScript 6入门》</li>
-<li>阅读过<code>koa</code>的源码</li>
-<li>阅读过<code>nodejs</code>中的源码，主要是<code>http</code>模块的实现，并自学过一些<code>c++</code>的知识。</li>
-</ul>
-</li>
-<li>善于用程序解决问题<ul>
-<li>为学习网络协议和代理的知识，做过一个<a href="https://github.com/lingximu/net-utils" target="_blank" rel="noopener">冲顶大会助手</a> ，能拦截所有网络数据并抽取出 websocket 中问题，并自动打开浏览器进行搜索。</li>
-<li>做过识别验证码自动登录的 chrome 扩展</li>
-</ul>
-</li>
-<li><strong>总会想办法提高效率</strong></li>
-</ul>
-<h2 id="项目经验"><a href="#项目经验" class="headerlink" title="项目经验"></a>项目经验</h2><ul>
-<li><p><a href="https://domain.163yun.com/" target="_blank" rel="noopener">域名系统</a> 和 内部运维系统<br>  两个都是全栈项目，前端包括：vuejs、vuex、webpack，后端使用 koa / koa-router 等。从这两个项目里抽象出了全栈模板 <a href="https://github.com/uron-templates/fullstack" target="_blank" rel="noopener">fullstack</a></p>
-</li>
-<li><p>后台管理系统<br>纯前端项目，技术包括：vue-cli / vuejs / 高德地图 / vue-gaode。</p>
-</li>
-<li><p>北森 cloud<br>  纯前端项目，技术包括： react / redux / immutablejs / webpack</p>
-</li>
-<li><p><a href="https://github.com/lingximu/my_rn_demo" target="_blank" rel="noopener">薛大人的水果铺</a><br>  全栈项目，前端使用 React-Native / mbox ，后端使用 koajs，前后端用 graphql 交互</p>
-</li>
-</ul>
-<h2 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h2><ul>
-<li>邮箱 <a href="mailto:`644522083@163.com" target="_blank" rel="noopener">`644522083@163.com</a>`</li>
-<li>电话 <code>17681800178</code></li>
-</ul>
-<hr>
 
-      <div class="clearfix"></div>
-    </div>
-    <div class="clearfix"></div>
-    <nav class="pagination" role="pagination">
+        </div>
+        <p class="post-copyright">本文版权归 lingximu 所有。来源灵犀木博客(blog.lingximu.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <!-- <a class="code-article" href="https://github.com/yangzj1992/blob/master/error.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a> -->
+          <i class="fa fa-tags"></i>
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+          </span>
+          <i class="fa fa-eye"></i>
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <!-- <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span> -->
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=nodejs 错误处理原则 | 灵犀木 | lingximu&#39;s blog &amp;url=http://www.101.132.161.32:8000/2018/05/21/error/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.101.132.161.32:8000/2018/05/21/error/index.html&amp;title=nodejs 错误处理原则 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.101.132.161.32:8000/2018/05/21/error/index.html&amp;text=nodejs 错误处理原则;via=lingximu| 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=&amp;t=nodejs 错误处理原则 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.101.132.161.32:8000/2018/05/21/error/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
   
+    <a class="pull-left" href="/2018/07/14/koajs-log/">
+      ← koajs 日志和错误处理最佳实践
+    </a>
+  
+  
+    <a class="pull-right" href="/2018/05/17/docker-guide/">
+      docker镜像的制作及应用 →
+    </a>
   
 </nav>
 
-    <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
 <div id="disqus_thread"></div>
 <script>
   (function() {  
@@ -354,14 +365,44 @@
   })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
   </div>
 </section>
-<script>
-$(function() {
-  $(".about-content").css('min-height',$(window).height() - $("footer").height() - $("#navigation").height() - 30);
-});
-</script>
 
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.101.132.161.32:8000/2018/05/21/error/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
 
     <!-- ============================ Footer =========================== -->
 <div class="control-panel">

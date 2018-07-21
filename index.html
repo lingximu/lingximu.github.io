@@ -93,13 +93,13 @@
           <div class="sb-list">
             <div class="sb-item sb-posts">
               <a href="/archives">
-                <span class="sb-item-count">5</span>
+                <span class="sb-item-count">6</span>
                 <span class="sb-item-name">日志</span>
               </a>
             </div>
             <div class="sb-item sb-words">
               <a href="/archives">
-                <span class="sb-item-count">10.2k</span>
+                <span class="sb-item-count">10.7k</span>
                 <span class="sb-item-name">字数</span>
               </a>
             </div>
@@ -367,6 +367,48 @@
             </span>
             <p class="pull-right readMore">
               <a href="/2018/07/14/koajs-log/">更多...</a>
+            </p>
+          
+          <div class="clearfix"></div>
+          <hr class="nogutter">
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2 opening-statement">
+          <h3 class="index-title">
+            <a class="title" href="/2018/05/21/error/">nodejs 错误处理原则</a>
+          </h3>
+          <p>
+            
+              
+在服务端，错误分为代码错误和运行错误。
+
+
+代码错误：即逻辑错误，比如调用一个不存在的函数，比如给函数传递了错误的参数，这一类是需要立刻抛出异常，停止运行的。因为无论如何，出错的代码也不会自动运行出正确的结果。那么当然出错时立刻抛出异常，便于排查问题。
+
+
+运行错误：即环境引起的错误，比如读写数据库错误、因网络问题导致调用底层服务出错等。这一部分很少会出问题，但总是有出问题的可能。所以我们需要将这一部分也考虑进去。
+
+
+错误发生时
+异
+            
+          </p>
+          
+            <span>
+              <span class='post-meta'>
+  <time datetime='2018-05-21T14:23:02.000Z' itemprop='datePublished'>
+    2018-05-21
+  </time>
+  
+</span> | 
+<span class="article-comment">
+  <a class='disqus-comment-count' href="/2018/05/21/error/#disqus_thread" data-disqus-url="/2018/05/21/error/"></a>
+</span>
+            </span>
+            <p class="pull-right readMore">
+              <a href="/2018/05/21/error/">更多...</a>
             </p>
           
           <div class="clearfix"></div>
