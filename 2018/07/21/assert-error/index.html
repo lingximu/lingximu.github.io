@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]>
+<html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<!--                                             
+ ___ _______ _____  __ _____  ___ _      _______  __ _ 
+/ _ `/ __/ // / _ \/ // / _ \/ _ `/ _   / __/ _ \/  ' \
+\_, /\__/\_, /\___/\_,_/_//_/\_, / (_)  \__/\___/_/_/_/
+ /_/    /___/               /___/                                                                         
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+  <!--<![endif]-->
+  
+<head>
+  <title>记一次 assert 中抛出的错误被 vue router 吞了的 bug 排查经历 | 灵犀木的博客</title>
+  <!-- Meta data -->
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="baidu-site-verification" content="teMXKvOcC9">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="generator" content="灵犀木的博客">
+  <meta name="author" content="lingxi mu">
+  <meta name="description" content="JavaScript、nodejs、CSS、c++、browser相关技术">
+  <meta name="keywords" content="">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+  <meta name="Copyright" content="lingximu"/>
+  <meta name="Contact" content="644522083@163.com"/>
+
+  <!-- Favicon, (keep icon in root folder) -->
+  <link rel="Shortcut Icon" href="/img/favicon.ico" type="image/ico">
+
+  <link rel="alternate" href="/atom.xml" title="灵犀木的博客" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/all.css" media="screen" type="text/css">
+	
+  <link rel="stylesheet" href="/highlightjs/vs.css" type="text/css">
+  
+  <link rel="apple-touch-icon" href="/img/favicon.ico">
+  <!-- Custom stylesheet, (add custom styles here, always load last) -->
+  <!-- Load our stylesheet for IE8 -->
+  <!--[if IE 8]>
+  <link rel="stylesheet" type="text/css" href="/css/ie8.css" />
+  <![endif]-->
+
+  <!-- Google Webfonts (Monserrat 400/700, Open Sans 400/600) -->
+  <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css">
+
+  <!-- Load our fonts individually if IE8+, to avoid faux bold & italic rendering -->
+  <!--[if IE]>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css'>
+  <![endif]-->
+
+  <!-- jQuery | Load our jQuery, with an alternative source fallback to a local version if request is unavailable -->
+  <script src="/js/lib/jquery-1.11.1.min.js"></script>
+  <!-- Load these in the <head> for quicker IE8+ load times -->
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="/js/lib/html5shiv.min.js"></script>
+  <script src="/js/lib/respond.min.js"></script>
+  <![endif]-->
+  
+  
+  
+</head>
+
+  <!--
+  <body class="post-template">
+  -->
+  <head><link href="/build/public/css/bundle.bb2b2222.min.css" rel="stylesheet"></head>
+  <body id="index" class="lightnav">
+    <!-- ============================ Off-canvas navigation =========================== -->
+<div class="sb-slidebar sb-right sb-style-overlay sb-momentum-scrolling">
+  <div class="slide-wrapper" id="slide-wrapper">
+    <div id="slide-canvas">
+
+    </div>
+    <div class="slide-content">
+        <div class="sb-close" aria-label="Close Menu" aria-hidden="true">
+          <i class="fa fa-close"></i>
+        </div>
+        <div class="clear"></div>
+        <div class="site-overview">
+          <a style="text-transform: none;" href="/">
+            <div class="site-author">
+              <img class="site-author-img" width="100px" height="100px" data-src="http://101.132.161.32:8000/img/tiger.png">
+              <div class="site-author-name">lingxi mu</div>
+            </div>
+          </a>
+          <div class="sb-list">
+            <div class="sb-item sb-posts">
+              <a href="/archives">
+                <span class="sb-item-count">5</span>
+                <span class="sb-item-name">日志</span>
+              </a>
+            </div>
+            <div class="sb-item sb-words">
+              <a href="/archives">
+                <span class="sb-item-count">10.2k</span>
+                <span class="sb-item-name">字数</span>
+              </a>
+            </div>
+            <div class="sb-item sb-categories">
+              <a href="/">
+                <span class="sb-item-count">0</span>
+                <span class="sb-item-name">分类</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="sb-rss">
+          <a href="/atom.xml">RSS</a>
+        </div>
+
+        <div class="web-links">
+          
+            <div class="sb-links">
+              <div class="links-title">链接</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://opensourcecontributo.rs/user/lingximu" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="GitHub contributions" target="_blank" rel="nofollow noopener noreferrer">Contributions</a>
+                
+                  <a href="http://www.101.132.161.32:8000/links" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Friend Sites" target="_blank" rel="nofollow noopener noreferrer">Links</a>
+                
+                  <a href="http://www.101.132.161.32:8000/categories/%E6%88%91%E7%9A%84%E7%94%9F%E6%B4%BB/" class="animsition-link" data-toggle="tooltip" data-placement="bottom" title="Work life" target="_blank" rel="nofollow noopener noreferrer">Life</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="web-links">
+          
+            <div class="sb-links">
+              <div class="links-title">更多</div>
+              <span class="sb-item-links">
+                
+                  <a href="https://github.com/xitu/gold-miner/wiki/%E8%AF%91%E8%80%85%E7%A7%AF%E5%88%86%E8%A1%A8" class="animsition-link" target="_blank" rel="nofollow noopener noreferrer">掘金翻译计划</a>
+                
+              </span>
+            </div>
+          
+        </div>
+
+        <div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by-nc/4.0">
+            <img data-src="http://101.132.161.32:8000/img/cc-by-nc.svg">
+          </a>
+        </div>
+
+        <div class="slider-action">
+          <span class="action-go"> ✧*｡٩(ˊωˋ*)و｡*✧ </span>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- ============================ END Off-canvas navigation =========================== -->
+
+<!-- ============================ #sb-site Main Page Wrapper =========================== -->
+
+<div id="sb-site" class="sb-site">
+  <!-- #sb-site - All page content should be contained within this id, except the off-canvas navigation itself -->
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <div id="navigation" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <!-- Nav logo -->
+        <div class="logo">
+          <a href="/" title="Logo" class="animsition-link">
+           <img id="white-logo" src="http://101.132.161.32:8000/img/logo.png" alt="Logo" width="25px;"/><img id="brown-logo" src="http://101.132.161.32:8000/img/logo_green.png" alt="Logo" width="25px;" style="display:none"> 
+          </a>
+        </div>
+        <!-- Info-bar -->
+        <nav>
+          <ul class="nav">
+            <li><a href="/" class="animsition-link website-title">灵犀木的博客</a></li>
+            <li><a href="/archives" class="animsition-link" title="archive">归档</a></li>
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">目录</a></li>
+            <!-- <li><a href="/tags" class="animsition-link" title="tags">标签</a></li> -->
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">关于</a></li>
+            <li class="mobile-li"><a href="/" class="animsition-link" title="archive">留言板</a></li>
+            
+              <li><a href="https://github.com/lingximu" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i></a></li>
+            
+            <!-- <li><a href="javascript:void(0)" title="Weixin" class="weixin"><i class="icon-CN_tencent_wechat"></i></a></li>
+            
+              <li><a href="http://weibo.com/lingximu" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i></a></li>
+            
+            
+              <li><a href="https://twitter.com/lingximu" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i></a></li>
+            
+            
+              <li><a href="http://www.zhihu.com/people/lingximu" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a></li>
+             -->
+            <li class="nolink">
+              <span class="welcome">Welcome!</span>
+            </li>
+          </ul>
+        </nav>
+        <!--// Info-bar -->
+      </div>
+      <!-- // .container -->
+      <button type="button" class="navbar-toggle menu-icon sb-toggle-right" title="More">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar before"></span>
+        <span class="icon-bar main"></span>
+        <span class="icon-bar after"></span>
+      </button>
+    </div>
+    <!-- // .navbar-inner -->
+  </div>
+
+  <!-- ============================ Header & Logo bar =========================== -->
+
+  <!-- ============================ Hero Image =========================== -->
+
+  <section id="hero" class="scrollme">
+    <div class="container-fluid element-img">
+      <div class="row">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
+          <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
+            <div class="center-text">
+              
+                <h2 class="home-header">GLAD TO SEE U, WELCOME TO lingximu &#39;S BLOG.</h2>
+                <p class="home-text"></p>
+		          
+                <h2 class="home-header"></h2>
+                <p class="home-text">每一个不曾起舞的日子都是对生命的辜负 —— 尼采 《查拉图斯特拉如是说》</p>
+		          
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="herofade beige-dk"></div>
+    </div>
+  </section>
+
+  <!-- ============================ END Hero Image =========================== -->
+    
+<section id="intro" class="intro">
+  <div class="container">
+    <div class="post-content">
+      
+        <div id="toc" class="toc-article col-md-2">
+          <strong class="toc-title">目录</strong>
+          <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#错误复现"><span class="toc-number">1.</span> <span class="toc-text">错误复现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#错误定位"><span class="toc-number">2.</span> <span class="toc-text">错误定位</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Object-prototype-toString"><span class="toc-number">3.</span> <span class="toc-text">Object.prototype.toString</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nodejs-端-assert-实现"><span class="toc-number">4.</span> <span class="toc-text">nodejs 端 assert 实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extends-继承规范"><span class="toc-number">5.</span> <span class="toc-text">extends 继承规范</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#babel-转码的实质"><span class="toc-number">6.</span> <span class="toc-text">babel 转码的实质</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#browser-端-assert-实现"><span class="toc-number">7.</span> <span class="toc-text">browser 端 assert 实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决办法"><span class="toc-number">8.</span> <span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">9.</span> <span class="toc-text">总结</span></a></li></ol>
+        </div>
+      
+      <div class="col-md-8 col-md-offset-3">
+        <div>
+          <h1 class="article-title">记一次 assert 中抛出的错误被 vue router 吞了的 bug 排查经历</h1>
+          <time datetime="2018-07-21T13:31:20.000Z" itemprop="datePublished" class="post-time">
+            <span>发布时间：2018 年 07 月 21 日</span>
+            <span style="margin-left: 10px;">最近更新于：2018 年 07 月 21 日</span>
+            <span style="margin-left: 10px;">本文共 2,995 字，读完约 13 分钟</span>
+          </time>
+        </div>
+      </div>
+      <div class="col-md-8 col-md-offset-3">
+        <div class="post-article">
+          <blockquote>
+<p>今天遇到一个bug，在进行路由跳转的时候，页面一直渲染不出来。而且控制台也没有错误打印出来。<br>定位问题后，发现是在 vue router 进行跳转的时候抛出了一个错误，但 vue router 并没有辨识出来，而这个错误造成了程序的中断引起的。下面对该过程进行记录。</p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="错误复现"><a href="#错误复现" class="headerlink" title="错误复现"></a>错误复现</h2><p>为了说明该问题，将该 bug 简单复现如下：</p>
+<blockquote>
+<p>完整代码可从 <a href="https://github.com/chenzhongchen27/client-laborary" target="_blank" rel="noopener">client-laborary</a> 获得</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> router = <span class="keyword">new</span> Router(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: <span class="string">'/a'</span>,</span><br><span class="line">      name: <span class="string">'A'</span>,</span><br><span class="line">      component: A</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      path: <span class="string">'/b'</span>,</span><br><span class="line">      name: <span class="string">'B'</span>,</span><br><span class="line">      component: B</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123; <span class="attr">path</span>: <span class="string">'*'</span>, <span class="attr">redirect</span>: <span class="string">'/a'</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">router.beforeEach(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (to.path === <span class="string">'/b'</span>) &#123;</span><br><span class="line">    <span class="comment">// 利用 assert 抛出一个错误</span></span><br><span class="line">    assert(<span class="literal">false</span>, <span class="string">'抛出一个错误，该错误会打断跳转，但不会被 vue router 捕捉到'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  next()</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>在从 a 页面跳转去 b 页面的时候，会发现跳转不过去，而且控制台不会报错。</p>
+<h2 id="错误定位"><a href="#错误定位" class="headerlink" title="错误定位"></a>错误定位</h2><blockquote>
+<p>因为简化了代码，定位该错误会轻松很多。我们一眼可以看出，在 <code>assert</code> 应该会抛出一个错误，从而打断程序的运行。那么后面的语句 <code>next()</code> 不会运行，自然跳转不过去。</p>
+</blockquote>
+<p>对错误进行跟踪，发现 vue-router 中处理错误的逻辑如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isError(err)) &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>$<span class="number">1.</span>errorCbs.length) &#123;</span><br><span class="line">        <span class="keyword">this</span>$<span class="number">1.</span>errorCbs.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">cb</span>) </span>&#123;</span><br><span class="line">            cb(err);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        warn(<span class="literal">false</span>, <span class="string">'uncaught error during route navigation:'</span>);</span><br><span class="line">        <span class="built_in">console</span>.error(err);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">onAbort &amp;&amp; onAbort(err);</span><br></pre></td></tr></table></figure>
+<p>可以看出，vue 先对 err 进行了判断 <code>isError(err)</code>。如果判断成立，则用<code>this$1.errorCbs</code>进行处理，或者用<code>console.error</code>打印出来。</p>
+<p>深入 <code>isError(err)</code> ，发现判断逻辑如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isError</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Object</span>.prototype.toString.call(err).indexOf(<span class="string">'Error'</span>) &gt; <span class="number">-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>err 用 <code>Object.prototype.toString.call(err)</code> 进行处理后，返回的结果为 <code>[object object]</code>，所以被 vue 判断为非错误对象。而如果为 Error 实例，则应该输出的是 <code>[object Error]</code>。所以 vue router 认为抛出的不是错误对象，所以不会打印出来。</p>
+<p>但用 instanceof 进行判断，会发现 <code>err instanceof Error</code> 返回的是 <code>true</code>。</p>
+<p>那么 <code>Object.prototype.toString.call</code> 是什么？为什么用它对 err 的类型进行判断？</p>
+<h2 id="Object-prototype-toString"><a href="#Object-prototype-toString" class="headerlink" title="Object.prototype.toString"></a>Object.prototype.toString</h2><p>查询 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/toString" target="_blank" rel="noopener">MDN 文档</a>，发现是一种检测对象类型的方式，如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> toString = <span class="built_in">Object</span>.prototype.toString;</span><br><span class="line"></span><br><span class="line">toString.call(<span class="keyword">new</span> <span class="built_in">Date</span>); <span class="comment">// [object Date]</span></span><br><span class="line">toString.call(<span class="keyword">new</span> <span class="built_in">String</span>); <span class="comment">// [object String]</span></span><br><span class="line">toString.call(<span class="built_in">Math</span>); <span class="comment">// [object Math]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//Since JavaScript 1.8.5</span></span><br><span class="line">toString.call(<span class="literal">undefined</span>); <span class="comment">// [object Undefined]</span></span><br><span class="line">toString.call(<span class="literal">null</span>); <span class="comment">// [object Null]</span></span><br></pre></td></tr></table></figure></p>
+<p>可以检测 Date String Math Undefined Null 等，Error 也不例外。</p>
+<p>但为什么和 instanceof 判断的不同，<code>Object.prototype.toString.call</code> 输出的实质是什么？我找到了相应的规范:</p>
+<p><a href="https://www.ecma-international.org/ecma-262/5.1/#sec-15.2.4.2" target="_blank" rel="noopener">ECMAScript 5.1 (ECMA-262) Object.prototype.toString</a></p>
+<p>按规范上说明，当该方法被调用的时候，分下面几步执行：</p>
+<blockquote>
+<p>When the toString method is called, the following steps are taken:</p>
+</blockquote>
+<blockquote>
+<ol>
+<li>If the this value is undefined, return “[object Undefined]”.</li>
+<li>If the this value is null, return “[object Null]”.</li>
+<li><strong>Let O be the result of calling ToObject passing the this value as the argument.</strong></li>
+<li>Let class be the value of the [[Class]] internal property of O.</li>
+<li>Return the String value that is the result of concatenating the three Strings “[object “, class, and “]”.</li>
+</ol>
+</blockquote>
+<p>err 满足第三条，故会将 err 作为参数传递给 <code>ToObject</code> ，然后将返回结果的 <code>[[class]]</code> 属性作为 <code>class</code> 的值，按 <code>&quot;[object &quot;, class, and &quot;]&quot;</code> 拼接成最终的结果。</p>
+<p>所以核心是 <code>ToObject</code> 方法和 <code>[[class]]</code> 属性。</p>
+<p>但查看 <a href="https://www.ecma-international.org/ecma-262/5.1/#sec-9.9" target="_blank" rel="noopener">ToObject 规范</a>，发现参数是对象的话，只是原样返回，不会进行任何转换。所以关键点在内部属性 <code>[[class]]</code> 上。</p>
+<p>assert 抛出的错误对象，<code>[[class]]</code> 是 <code>object</code>，而用 <code>Error</code> 实例化的错误对象，<code>[[class]]</code> 是 <code>Error</code>。</p>
+<p>我们去查看 assert 的内部实现。</p>
+<h2 id="nodejs-端-assert-实现"><a href="#nodejs-端-assert-实现" class="headerlink" title="nodejs 端 assert 实现"></a>nodejs 端 assert 实现</h2><blockquote>
+<p>我在这儿走了段弯路，直接去查看的 nodejs assert 模块。其实在浏览器端的 assert是一个兼容 nodejs API 的 <a href="https://github.com/defunctzombie/commonjs-assert" target="_blank" rel="noopener">第三方 assert 库</a>。但也因此搞懂了 extends 继承的实质。比该 bug 的解决更有价值。</p>
+</blockquote>
+<p>nodejs -&gt; lib/assert.js 源码如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> errors = <span class="built_in">require</span>(<span class="string">'internal/errors'</span>);</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line"><span class="keyword">const</span> assert = <span class="built_in">module</span>.exports = ok;</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ok</span>(<span class="params">value, message</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!value) innerFail(value, <span class="literal">true</span>, message, <span class="string">'=='</span>, ok);</span><br><span class="line">&#125;</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">innerFail</span>(<span class="params">actual, expected, message, operator, stackStartFunction</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> errors.AssertionError(&#123;</span><br><span class="line">    message,</span><br><span class="line">    actual,</span><br><span class="line">    expected,</span><br><span class="line">    operator,</span><br><span class="line">    stackStartFunction</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br><span class="line">    ……</span><br></pre></td></tr></table></figure>
+<p>由代码可以看出，assert 其实抛出了一个 errors.AssertionError 对象，而该对象在 <code>internal/errors</code> 模块中。继续跟进</p>
+<p>nodejs -&gt; lib/internal/errors.js 源码</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AssertionError</span> <span class="keyword">extends</span> <span class="title">Error</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(options) &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> options !== <span class="string">'object'</span> || options === <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> exports.TypeError(<span class="string">'ERR_INVALID_ARG_TYPE'</span>, <span class="string">'options'</span>, <span class="string">'object'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> &#123;</span><br><span class="line">            actual,</span><br><span class="line">            expected,</span><br><span class="line">            message,</span><br><span class="line">            operator,</span><br><span class="line">            stackStartFunction</span><br><span class="line">        &#125; = options;</span><br><span class="line">        <span class="keyword">if</span> (message) &#123;</span><br><span class="line">            <span class="keyword">super</span>(message);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            ……</span><br><span class="line">            ……</span><br><span class="line">            ……</span><br><span class="line">        &#125;</span><br><span class="line">            ……</span><br><span class="line">            ……</span><br><span class="line">            ……</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们发现，AssertionError 是继承自 Error 的类。</p>
+<p>那现在就有了下一个疑问，用 extends 继承的新类，它实例化之后的属性 <code>[[class]]</code> 为什么是 <code>object</code> ，而不是 <code>Error</code> ，或者 <code>AssertionError</code> ？如果是这两者的任意一个，vue 中对错误的判断就可以成立。</p>
+<p>所以我们继续对 <code>extends</code> 的继承规范进行了查询：</p>
+<h2 id="extends-继承规范"><a href="#extends-继承规范" class="headerlink" title="extends 继承规范"></a>extends 继承规范</h2><p>在 <a href="https://www.ecma-international.org/ecma-262/6.0/#sec-error-constructor" target="_blank" rel="noopener">Error 中 extends 继承规范</a> 中发现这样一段描述：</p>
+<blockquote>
+<p>The Error constructor is designed to be subclassable. It may be used as the value of an extends clause of a class definition. Subclass constructors that intend to inherit the specified Error behaviour must include a super call to the Error constructor to create and initialize subclass instances with a [[ErrorData]] internal slot.</p>
+</blockquote>
+<p>大意就是 Error 可以用 extends 进行继承来构造子类。子类实例化的时候，必须在 constructor 中调用  super ,从而用一个 <code>[[ErrorData]]</code> 内部插槽对子类的实例初始化。</p>
+<p>对 <a href="https://www.ecma-international.org/ecma-262/6.0/#sec-object-internal-methods-and-internal-slots" target="_blank" rel="noopener">internal slot</a> 进行探究，发现很长篇幅的说明，其中的首段是一个总结：</p>
+<blockquote>
+<p>The actual semantics of objects, in ECMAScript, are specified via algorithms called internal methods. Each object in an ECMAScript engine is associated with a set of internal methods that defines its runtime behaviour. These internal methods are not part of the ECMAScript language. They are defined by this specification purely for expository purposes. However, each object within an implementation of ECMAScript must behave as specified by the internal methods associated with it. The exact manner in which this is accomplished is determined by the implementation.</p>
+</blockquote>
+<p>翻译如下：</p>
+<blockquote>
+<p>ECMAScript中对象的实际语义是通过称为内部方法的算法指定的。 ECMAScript引擎中的每个对象都与一组内部方法相关联，这些内部方法定义了它运行时的行为。 这些内部方法不是ECMAScript语言的一部分。 它们仅由出于说明目的而由本规范定义。 但是，ECMAScript引擎实现的每一个对象，都必须按照与其关联的内部方法的指定行事。而实现的确切方式可以由引擎本身来决定。</p>
+</blockquote>
+<p>结合规范中的其他内容，大概能理解内部插槽的意思： ECMAScript中的每个对象都有很多内部方法和内部插槽，这个对象的行为本质是由这些内部方法和插槽决定的。这些方法和插槽包括 <code>[[GetPrototypeOf]]</code> <code>[[SetPrototypeOf]]</code> <code>[[GetOwnProperty]]</code> <code>[[Get]]</code> 等等。其中 <code>[[class]]</code> 和 <code>[[ErrorData]]</code> 应该就是其中之二。<code>[[ErrorData]]</code>应该是 Error 特有的。</p>
+<p>结合 <a href="http://es6.ruanyifeng.com/#docs/class-extends#%E5%8E%9F%E7%94%9F%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9A%84%E7%BB%A7%E6%89%BF" target="_blank" rel="noopener">阮老师对原生构造函数的继承</a> 的说明，就可以理解es6继承和实例化的实质：先实例化父类，生成当前 this( <strong>已经挂载了父类的内部方法和插槽</strong>，比如 <code>[[class]]</code> )，再往该 this 上添加子类的方法或属性。从而<strong>保证子类运行时的行为和父类一致</strong>。</p>
+<p>也就是说，继承 Error 的子类 AssertionError ，在实例化的时候，会先用 Error 实例化this，也就是添加内部属性，然后再往上面添加子类的方法。而规范里也并没有说明 extends 会更改对应的内部属性 <code>[[class]]</code>，所以内部属性 <code>[[class]]</code> 应该还是字符串 <code>Error</code>。用 <code>Object.prototype.toString</code> 证明了这一点。</p>
+<p>按这个逻辑，vue router 的判断应该是对的。那会不会是打包的时候用 babel 进行转码引起的？我又对 babel 的转码机制进行了探究。</p>
+<h2 id="babel-转码的实质"><a href="#babel-转码的实质" class="headerlink" title="babel 转码的实质"></a>babel 转码的实质</h2><p>为了简单起见，我并没有查看 babel 的源码，而是直接看 babel 转码之后的表现。babel 有一个网页版的界面，能实时查看转码后的代码，我写了一个 <a href="http://babeljs.io/repl/#?babili=false&amp;browsers=&amp;build=&amp;builtIns=false&amp;spec=false&amp;loose=false&amp;code_lz=G4QwTgBANg9g5hAvBAxjAdgZxlApgOljnwCMBLdAEwAo0sdcBKAKBShE0wgFEAPAF1xUQJPNzBgYkXAKGUu4yZADezCKgyZ-YAK4p-U6gFtcnEHCYRV69Zh0AHXGGqMA3Gpv8AFmUz4TZhZIEAGY5rjuNhDevvhaICgA1sHU6LgA7jwShoyMcfwJiZGePn7oICbBMX50Wrr6UvjlJsUAvsztzMygkEYAnk5KwWmZfILCoriKhgDkUFAzbl1ExgPZkBTx6Ci4MABmPLITYussKwDyJABWuPr49pIG_H2O-AYAytoUxCgg86uDKS5ZhAA&amp;debug=false&amp;forceAllTransforms=false&amp;shippedProposals=false&amp;circleciRepo=&amp;evaluate=true&amp;fileSize=false&amp;sourceType=module&amp;lineWrap=false&amp;presets=es2015%2Creact%2Cstage-2&amp;prettier=false&amp;targets=&amp;version=6.26.0&amp;envVersion=" target="_blank" rel="noopener">继承 Error 构造子类的例子</a>.</p>
+<p>查看了 babel 转码后的代码，发现一个很有意思的现象：babel 的实现是完全基于 es6 的继承规范来的，即先实例化父类，再将子类的属性附加到父类上：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line">    ……</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_possibleConstructorReturn</span>(<span class="params">self, call</span>) </span>&#123;</span><br><span class="line">    ……</span><br><span class="line">    <span class="comment">// 直接返回第二个参数 call，而 call 就算父类构造的实例</span></span><br><span class="line">    <span class="keyword">return</span> call &amp;&amp; (<span class="keyword">typeof</span> call === <span class="string">"object"</span> || <span class="keyword">typeof</span> call === <span class="string">"function"</span>) ? call : self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_inherits</span>(<span class="params">subClass, superClass</span>) </span>&#123;</span><br><span class="line">    ……</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (superClass)</span><br><span class="line">        <span class="built_in">Object</span>.setPrototypeOf ? <span class="built_in">Object</span>.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> log = <span class="built_in">console</span>.log.bind(<span class="built_in">console</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ExtendableError = <span class="function"><span class="keyword">function</span> (<span class="params">_Error</span>) </span>&#123;</span><br><span class="line">    _inherits(ExtendableError, _Error);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">ExtendableError</span>(<span class="params">message</span>) </span>&#123;</span><br><span class="line">        ……</span><br><span class="line">        <span class="comment">// 用父类构造 this，此处第二个参数相当于 Error.call(this)。但 Error 会忽略绑定的 this，所以相当于直接实例化 Error</span></span><br><span class="line">        <span class="keyword">var</span> _this = _possibleConstructorReturn(<span class="keyword">this</span>, (ExtendableError.__proto__ || <span class="built_in">Object</span>.getPrototypeOf(ExtendableError)).call(<span class="keyword">this</span>));</span><br><span class="line">        <span class="comment">// 对 this 添加自构造函数的属性 message</span></span><br><span class="line">        _this.message = message;</span><br><span class="line">        _this.stack = <span class="keyword">new</span> <span class="built_in">Error</span>().stack;</span><br><span class="line">        _this.name = _this.constructor.name;</span><br><span class="line">        <span class="keyword">return</span> _this;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ExtendableError;</span><br><span class="line">&#125;(<span class="built_in">Error</span>);</span><br></pre></td></tr></table></figure>
+<p> 但是！！按当前的实现，虽然用 <code>Object.prototype.toString</code> 判断时会返回 <code>[object Error]</code>，而且用 instanceof 判断是否属于 Error 时也是 true，但用 instanceof 判断实例是否属于子类时，会返回 false？？！笔者一脸懵逼。而且试验之后确定是这样的。</p>
+<p>那问题又回到了初始的时候：既然无论是 es6 的 extends 规范，还是 babel 的转码，都证明 vue 中对是否是错误的判断 <code>Object.prototype.toString.call(err).indexOf(&#39;Error&#39;) &gt; -1</code> 是正确的，那么为什么浏览器还会出现判断错误的情况？</p>
+<p>这时候笔者才想起，nodejs 内置的几个包，在浏览器端引用的时候，其实都是引的另一个兼容浏览器的包。并不是 nodejs 内置的模块😭。果然在 node_modules 中找到了浏览器端 assert 的实现：</p>
+<h2 id="browser-端-assert-实现"><a href="#browser-端-assert-实现" class="headerlink" title="browser 端 assert 实现"></a>browser 端 assert 实现</h2><p>我项目 node_modules 中的 assert 是最新的 1.4.1 版本，这个包是 npm 自动安装的，并没有在我的 package.json 中体现出来。源代码地址： <a href="https://github.com/defunctzombie/commonjs-assert/tree/v1.4.1" target="_blank" rel="noopener">commonjs-assert@1.4.1</a></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    ……</span><br><span class="line"><span class="keyword">var</span> assert = <span class="built_in">module</span>.exports = ok;</span><br><span class="line">    ……</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ok</span>(<span class="params">value, message</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!value) fail(value, <span class="literal">true</span>, message, <span class="string">'=='</span>, assert.ok);</span><br><span class="line">&#125;</span><br><span class="line">assert.ok = ok;</span><br><span class="line">    ……</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fail</span>(<span class="params">actual, expected, message, operator, stackStartFunction</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">throw</span> <span class="keyword">new</span> assert.AssertionError(&#123;</span><br><span class="line">    message: message,</span><br><span class="line">    actual: actual,</span><br><span class="line">    expected: expected,</span><br><span class="line">    operator: operator,</span><br><span class="line">    stackStartFunction: stackStartFunction</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">    ……</span><br><span class="line">assert.AssertionError = <span class="function"><span class="keyword">function</span> <span class="title">AssertionError</span>(<span class="params">options</span>) </span>&#123;  ……  &#125;</span><br><span class="line">    ……</span><br><span class="line">util.inherits(assert.AssertionError, <span class="built_in">Error</span>);</span><br><span class="line">    ……</span><br></pre></td></tr></table></figure>
+<p>如上所示，抛出的 AssertionError 是使用 util.inherits 继承了 Error 对象。</p>
+<p><a href="https://github.com/isaacs/inherits/blob/master/inherits_browser.js" target="_blank" rel="noopener">inherits 的实现</a>在单独的库中，实现方式很简单，核心不过是用 <code>Object.create</code> 包装一下而已。所以子类的实质就是原始的 Object 而已，所以内部属性 <code>[[class]]</code> 为字符串 object。</p>
+<p>所以 <code>Object.prototype.toString.call(err).indexOf(&#39;Error&#39;)</code> 输出的是 <code>[object object]</code>，故用 <code>Object.prototype.toString.call(err).indexOf(&#39;Error&#39;) &gt; -1</code> 会判断出错。</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>知道了问题原因，解决起来就很简单了。笔者找了另一个 assert 库 <a href="https://github.com/socialally/browser-assert" target="_blank" rel="noopener">browser-assert</a>。它的实现非常简单：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">assert</span>(<span class="params">expr, message</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(!<span class="built_in">Boolean</span>(expr)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(message || <span class="string">'unknown assertion error'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>因为是直接抛出的 Error 实例，所以 vue 不会判断出错。<br>在 webpack 中将 assert 设置成 browser-assert 的别名，则浏览器中引用的就都是 browser-assert 。<br>缺点就是 API 和 nodejs 不能保持一致，只能直接使用 <code>assert(expression)</code>。但因为项目中前端代码只用到这一个 API，所以对我们的项目来说倒很合适。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本次排查最大的收获是加深了对 es6 中继承机制的理解，es6 中继承不仅仅是原型继承的语法糖，它有更深层次的东西。这些深层次的东西有些很难用旧的语法来实现，所以 babel 的转码并不能保证完全可靠。今后继承应该尽量用 es6 的方式，而不是用原型继承的方式。</p>
+<hr>
+
+        </div>
+        <p class="post-copyright">本文版权归 lingximu 所有。来源灵犀木博客(blog.lingximu.com)，商业转载请联系本人获得授权，非商业转载请注明出处。
+        </p>
+        <div class="clearfix"></div>
+        <hr class="nogutter">
+        <div class="summary">
+          <!-- <a class="code-article" href="https://github.com/yangzj1992/blob/master/assert-error.md" target="_blank" rel="nofollow noopener noreferrer">
+            <i class="fa fa-file-code-o"></i>
+            <span class="i-name">源码</span>
+          </a> -->
+          <i class="fa fa-tags"></i>
+          <span class="i-name"></span>
+          <span class="post-meta">
+            
+          </span>
+          <i class="fa fa-eye"></i>
+          <span class="i-name">
+            <span id="busuanzi_container_page_pv">
+              <span id="busuanzi_value_page_pv"></span>次阅读
+            </span>
+          </span>
+          <!-- <span class="reward">
+            <i class="fa fa-rmb"></i>
+            <span class="i-name post-words">打赏</span>
+          </span> -->
+          <span id="share" class="share-box">
+            <div class="qrcode" id="qrcode"></div>
+            <a id="wechat" class="share-icon" title="分享到微信" data-wechat-url="" href="javascript:void(0);">
+              <i class="icon-CN_tencent_wechat"></i>
+            </a>
+            <a id="weibo" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到微博" href="http://service.weibo.com/share/share.php?title=记一次 assert 中抛出的错误被 vue router 吞了的 bug 排查经历 | 灵犀木 | lingximu&#39;s blog &amp;url=http://www.101.132.161.32:8000/2018/07/21/assert-error/index.html&amp;type=3&amp;searchPic=false">
+              <i class="icon-CN_sina_weibo"></i>
+            </a>
+            <a id="qzone" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="分享到 QQ 空间" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.101.132.161.32:8000/2018/07/21/assert-error/index.html&amp;title=记一次 assert 中抛出的错误被 vue router 吞了的 bug 排查经历 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-CN_tencent_qzone"></i>
+            </a>
+            <a id="twitter" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Twitter" href="https://twitter.com/intent/tweet?url=http://www.101.132.161.32:8000/2018/07/21/assert-error/index.html&amp;text=记一次 assert 中抛出的错误被 vue router 吞了的 bug 排查经历;via=lingximu| 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Twitter"></i>
+            </a>
+            <a id="facebook" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Facebook" href="http://www.facebook.com/sharer.php?u=&amp;t=记一次 assert 中抛出的错误被 vue router 吞了的 bug 排查经历 | 灵犀木 | lingximu&#39;s blog">
+              <i class="icon-Popular_Facebook"></i>
+            </a>
+            <a id="gplus" class="share-icon" target="_blank" rel="nofollow noopener noreferrer" title="Share to Google+" href="https://plus.google.com/share?url=http://www.101.132.161.32:8000/2018/07/21/assert-error/index.html">
+              <i class="icon-Popular_G"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+      <nav class="pagination" role="pagination">
+  
+  
+    <a class="pull-right" href="/2018/07/15/koajs-envs/">
+      nodejs 多环境配置最佳实践 →
+    </a>
+  
+</nav>
+
+      <div class="clear"></div>
+      <div class="post-comment">
+        <div class="duoshuo"><p class="disqus-error" style="padding-top: 40px;">本博客采用 Disqus 作为评论解决方案，目前 Disqus 经常被 GFW 封锁，若想参与评论请翻墙访问本站或将 disqus.com 添加至翻墙白名单。你也可以通过导航栏上的社交网站与我联系</p>
+<div id="disqus_thread"></div>
+<script>
+  (function() {  
+    var d = document, s = d.createElement('script');
+    s.src = '//lingximu.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    s.onload = function (){
+      $('.disqus-error').hide();
+    } 
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="/js/lib/jquery.qrcode.min.js"></script>
+<script>
+  $("#wechat").hover(function() {
+    $("#qrcode").css('display','inline-block');
+    jQuery("#qrcode").qrcode({
+      text:utf16to8("http://www.101.132.161.32:8000/2018/07/21/assert-error/index.html"),
+      width:96,
+      height:96
+    });
+  },function(){
+    $("#qrcode").css('display','none');
+    jQuery("#qrcode").html('');
+  });
+  function utf16to8(str) {
+    var out, i, len, c;
+    out = "";
+    len = str.length;
+    for (i = 0; i < len; i++) {
+      c = str.charCodeAt(i);
+      if ((c >= 0x0001) && (c <= 0x007F)) {
+        out += str.charAt(i);
+      } else if (c > 0x07FF) {
+        out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+        out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      } else {
+        out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+        out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+      }
+    }
+    return out;
+  }
+</script>
+
+    <!-- ============================ Footer =========================== -->
+<div class="control-panel">
+  <ul>
+    <li>
+      <i class="fa fa-arrow-up"></i>
+    </li>
+    <li>
+      <i class="fa fa-arrow-down"></i>
+    </li>
+    <li>
+      <i class="fa fa-music"></i>
+    </li>
+  </ul>
+</div>
+<footer>
+  <div class="footer">
+    <div class="copy">
+      <p>
+        &copy; 2014<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script>, Content By lingxi mu. All Rights Reserved.
+      </p>
+      <p>
+        <span id="busuanzi_container_site_pv">
+          This site already had <span id="busuanzi_value_site_pv"></span> Visits by
+        </span>
+        <span id="busuanzi_container_site_uv">
+          <span id="busuanzi_value_site_uv"></span> Visitors
+        </span>
+      </p>
+      <p>
+        Powered by <a href="https://hexo.io/zh-cn/">Hexo</a> & <a href="https://github.com/lingximu/hexo-theme-lxm">hexo-theme-lxm</a>,
+        Hosted by <a href="https://pages.coding.me">Coding Pages</a> & <a href="https://pages.github.com/">Github Pages</a>
+      </p>
+    </div>
+    <div class="social">
+      <ul>
+        
+          <li><a href="https://github.com/lingximu" title="Github" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_GitHub"></i>&nbsp;</a></li>
+        
+        <li class="weixin"><a href="javascript:void(0)" title="Weixin"><i class="icon-CN_tencent_wechat"></i>&nbsp;</a></li>
+        
+          <li><a href="http://weibo.com/lingximu" title="Sina-Weibo" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_sina_weibo"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="https://twitter.com/lingximu" title="Twitter" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-Popular_Twitter"></i>&nbsp;</a></li>
+        
+        
+          <li><a href="http://www.zhihu.com/people/lingximu" title="Zhihu" target="_blank" rel="nofollow noopener noreferrer"><i class="icon-CN_zhihu"></i></a>&nbsp;</li>
+        
+      </ul>
+      <div class="search">
+        <form id="searchform" class="searchform" onsubmit="return dispatch()">
+          <div class="search_text">
+            <i class="fa fa-search"></i>
+            <input type="text" name="q" id="searchbox" class="searchbox" value="" placeholder="">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div style="display:none">
+    
+<!-- cnzz统计代码  -->
+<script type="text/javascript">
+  var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000263347'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000263347' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<!-- cnzz统计代码end  -->
+
+  </div>
+</footer>
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<!-- <script async id="dsq-count-scr" src="https://lingximu.disqus.com/count.js" ></script> -->
+<!-- ============================ END Footer =========================== -->
+    <!-- Load our scripts -->
+        
+<!-- Resizable 'on-demand' full-height hero -->
+<script type="text/javascript">
+  var resizeHero = function () {
+    var hero = $(".cover,.heightblock"),
+      window1 = $(window);
+    hero.css({
+      "height": window1.height()
+    });
+  };
+  resizeHero();
+  $(window).resize(function () {
+    resizeHero();
+  });
+</script>
+<script src="/js/dist/base.min.js"></script>
+
+
+  <script type="text/javascript" src="/build/public/js/bundle.ebb0e0e1.min.js"></script></body>
+</html>

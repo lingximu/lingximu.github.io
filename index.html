@@ -93,13 +93,13 @@
           <div class="sb-list">
             <div class="sb-item sb-posts">
               <a href="/archives">
-                <span class="sb-item-count">4</span>
+                <span class="sb-item-count">5</span>
                 <span class="sb-item-name">日志</span>
               </a>
             </div>
             <div class="sb-item sb-words">
               <a href="/archives">
-                <span class="sb-item-count">7.2k</span>
+                <span class="sb-item-count">10.2k</span>
                 <span class="sb-item-name">字数</span>
               </a>
             </div>
@@ -249,6 +249,45 @@
 <!-- // End height spacing helper -->
 <section id="intro" class="index-context intro">
   <div class="container">
+    
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2 opening-statement">
+          <h3 class="index-title">
+            <a class="title" href="/2018/07/21/assert-error/">记一次 assert 中抛出的错误被 vue router 吞了的 bug 排查经历</a>
+          </h3>
+          <p>
+            
+              
+今天遇到一个bug，在进行路由跳转的时候，页面一直渲染不出来。而且控制台也没有错误打印出来。定位问题后，发现是在 vue router 进行跳转的时候抛出了一个错误，但 vue router 并没有辨识出来，而这个错误造成了程序的中断引起的。下面对该过程进行记录。
+
+[TOC]
+错误复现为了说明该问题，将该 bug 简单复现如下：
+
+完整代码可从 client-laborary 获得
+
+123456789101112131415161
+            
+          </p>
+          
+            <span>
+              <span class='post-meta'>
+  <time datetime='2018-07-21T13:31:20.000Z' itemprop='datePublished'>
+    2018-07-21
+  </time>
+  
+</span> | 
+<span class="article-comment">
+  <a class='disqus-comment-count' href="/2018/07/21/assert-error/#disqus_thread" data-disqus-url="/2018/07/21/assert-error/"></a>
+</span>
+            </span>
+            <p class="pull-right readMore">
+              <a href="/2018/07/21/assert-error/">更多...</a>
+            </p>
+          
+          <div class="clearfix"></div>
+          <hr class="nogutter">
+        </div>
+      </div>
     
       <div class="row">
         <div class="col-md-8 col-md-offset-2 opening-statement">
